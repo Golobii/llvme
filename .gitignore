@@ -2,7 +2,7 @@
 build
 lib/*
 
-compiler/__pycache__/
+compiler/__pycache__
 
 # Ignore Mac specific files
 .DS_Store
