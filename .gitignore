@@ -1,0 +1,8 @@
+# Ignore the build and lib dirs
+build
+lib/*
+
+compiler/__pycache__/
+
+# Ignore Mac specific files
+.DS_Store

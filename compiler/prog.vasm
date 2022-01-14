@@ -1,0 +1,16 @@
+mv r1, 0
+mv r2, 1
+mv r3, 10
+
+jump1:
+
+add r1, r2
+debug
+
+mv A, r1
+debug
+
+jne r3, jump1:
+debug
+
+hlt

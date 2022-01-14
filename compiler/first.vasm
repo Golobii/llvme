@@ -1,0 +1,2 @@
+mv r2, 5    ; This is a comment
+debug       ; This is another comment
