@@ -50,7 +50,7 @@ class Parser:
                 num += current
                 self._i += 1
                 current = self.program[self._i]
-            self.tokens.append(Token('int', int(num)))
+            self.tokens.append(Token(type='int', value=int(num)))
 
         elif current == ' ':
             pass

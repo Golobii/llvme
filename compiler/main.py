@@ -1,20 +1,21 @@
 import sys
 
 from src.parser import Parser
-from src.compiler import compile_tokens
+from src.compiler import Compiler
 
 def main() -> None:
     with open(sys.argv[1], 'r') as f:
         program = f.read()
     
     parser = Parser(program)
+    compiler = Compiler()
 
     tokens = parser.tokenize()
     for token in tokens:
         print(f'({token.type}|{token.value}|{token.name})', end=' ') 
     print()
 
-    buffer = compile_tokens(tokens)
+    buffer = compiler.compile_tokens(tokens)
 
     with open(sys.argv[2], 'wb') as f:
         f.write(bytes(buffer))

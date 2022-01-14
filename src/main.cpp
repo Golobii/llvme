@@ -21,26 +21,6 @@ void flashMem(std::string fileName, Memory *mem)
     {
         Byte byt = bytes.at(i);
         mem->setByte(i, byt);
-        switch (byt)
-        {
-        case 0x1B:
-            std::cout << "1b\n";
-            break;
-
-        case 0x00:
-            std::cout << "0x00\n";
-            break;
-
-        case 0x01:
-            std::cout << "0x01\n";
-            break;
-
-        case 0xf0:
-            break;
-
-        default:
-            break;
-        }
     }
 
     f.close();
