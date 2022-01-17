@@ -26,5 +26,6 @@
 
 #define HLT 0xff
 #define DEBUG 0xf0
+#define NOOP 0x00
 
 #endif // INSTRUCTIONS_H

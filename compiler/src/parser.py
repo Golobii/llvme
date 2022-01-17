@@ -41,16 +41,39 @@ class Parser:
 
         return False
 
+    def __over_program_len(self, i: int = -1) -> bool:
+        if i == -1:
+            num = self._i
+        else:
+            num = i
+
+        if num + 1 < len(self.program):
+            return False
+
+        return True
+
     def tokenize(self) -> list[Token]:
         current = self.program[self._i]
         
         if current.isdigit():
+            isHex = False
             num = ''
-            while current.isdigit():
+            while current.isdigit() or current == 'x' and not self.__over_program_len():
                 num += current
                 self._i += 1
                 current = self.program[self._i]
-            self.tokens.append(Token(type='int', value=int(num)))
+                if current == 'x':
+                    if isHex:
+                        raise SyntaxError(f'Invalid number {num}.')
+
+                    isHex = True
+
+            if isHex:
+                num = int(num, base=16)
+            else:
+                num = int(num)
+
+            self.tokens.append(Token(type='int', value=num))
 
         elif current == ' ':
             pass
@@ -59,27 +82,28 @@ class Parser:
             pass
 
         elif current == ';':
-            while current != '\n' and self._i + 1 < len(self.program):
+            while current != '\n' and not self.__over_program_len():
                 self._i += 1
                 current = self.program[self._i]
 
         elif current.isascii():
             word = ''
-            while current != ' ' and current != '\n':
-                word += current
+            word += current
+            while not self.__over_program_len():
                 self._i += 1
                 current = self.program[self._i]
-                while current == ',':
-                    self._i += 1
-                    current = self.program[self._i]
-
+                if current == ' ' or current == '\n':
+                    break
+                elif current == ',':
+                    continue
+                word += current
             
             if self.is_instruction(word):
                 self.tokens.append(Token(type='ins', value=0, name=word))
             elif self.is_reg(word):
                 self.tokens.append(Token('reg', self.REGISTERS[word]))
             else:
-                assert(f'Word: \'{word}\' isn\'t a valid word.')
+                raise SyntaxError(f'Word: \'{word}\' isn\'t a valid word.')
                 
 
         self._i += 1

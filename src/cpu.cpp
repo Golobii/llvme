@@ -31,7 +31,7 @@ void CPU::execute(size_t instruction)
     case DEBUG:
         for (size_t i = 0; i < NUM_OF_REG; i++)
         {
-            std::cout << "Reg" << i << ": " << getReg(i) << "\n";
+            std::cout << "Reg" << i + 1 << ": " << getReg(i) << "\n";
         }
 
         printf("Acc: %d\n", acc);
@@ -104,11 +104,15 @@ void CPU::execute(size_t instruction)
         acc = ~acc;
         break;
 
+    case NOOP:
+        break;
+
     case HLT:
         return;
 
     default:
-        break;
+        std::cout << "System error\n";
+        return;
     }
 
     step();

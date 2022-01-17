@@ -10,19 +10,30 @@ class Compiler:
     def __init__(self) -> None:
         pass
 
-    @classmethod
+    @staticmethod
+    def raise_mv_error(param: Token):
+            raise SystemError(f'Err at mv instruction. Expecter register but got: \'{param.type}\'')
+
+
     def __compile_mov(self, param1: Token, param2: Token) -> None:
         if param1.type != types.reg:
-            # TODO: throw err
-            return
+            self.raise_mv_error(param1)
 
         if param2.type == types.int:
             self.buffer.append(0x1B)
             self.buffer.append(param2.value)
             self.buffer.append(param1.value)
             return            
+        elif param2.type == types.reg:
+            self.buffer.append(0x13)
+            self.buffer.append(param1.value)
+            self.buffer.append(0x12)
+            self.buffer.append(param2.value)
+            return
 
-    @classmethod
+        
+        self.raise_mv_error(param2)
+
     def __next(self) -> None:
         current = self.tokens[self._i]
 
@@ -41,7 +52,6 @@ class Compiler:
             self.__next()
         
 
-    @classmethod
     def compile_tokens(self, tokens: list[Token]) -> bytearray:
         self.buffer = bytearray()
         self.tokens = tokens

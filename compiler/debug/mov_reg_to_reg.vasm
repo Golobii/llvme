@@ -1,0 +1,3 @@
+mv r1, 0x05
+mv r1, r2
+debug
