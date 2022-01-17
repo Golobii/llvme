@@ -1,9 +1,6 @@
 #if !defined(MEMORY_H)
 #define MEMORY_H
 
-#include <cstddef>
-#include <iostream>
-
 typedef unsigned char Byte;
 
 class Memory
@@ -15,11 +12,11 @@ public:
     Memory();
     ~Memory();
 
-    size_t MAX_MEM = 0xffff;
+    unsigned int MAX_MEM = 0xffff;
 
     // change to unsinged int
-    Byte getByte(size_t addr);
-    void setByte(size_t addr, Byte value);
+    Byte getByte(unsigned int addr);
+    void setByte(unsigned int addr, Byte value);
 };
 
 #endif // MEMORY_H

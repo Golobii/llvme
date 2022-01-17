@@ -8,6 +8,8 @@ CPU::CPU(Memory mem)
 void CPU::boot()
 {
     ip = acc = 0;
+    ZF = NF = false;
+
     for (size_t i = 0; i < NUM_OF_REG; i++)
     {
         setReg(i, 0);
@@ -22,20 +24,34 @@ int CPU::fetch()
     return data;
 }
 
-void CPU::execute(size_t instruction)
+void CPU::setFlagsForAcc()
+{
+    NF = acc < 0;
+    ZF = acc == 0;
+}
+
+void CPU::setFlagsForAcc(int x)
+{
+    NF = x < 0;
+    ZF = x == 0;
+}
+
+void CPU::execute(Byte instruction)
 {
     int reg;
     int val;
     switch (instruction)
     {
     case DEBUG:
-        for (size_t i = 0; i < NUM_OF_REG; i++)
+        for (unsigned int i = 0; i < NUM_OF_REG; i++)
         {
             std::cout << "Reg" << i + 1 << ": " << getReg(i) << "\n";
         }
 
         printf("Acc: %d\n", acc);
         printf("Ip: %d\n", ip);
+        printf("ZF: %d\n", ZF);
+        printf("NF: %d\n", NF);
         getchar();
 
         break;
@@ -54,6 +70,7 @@ void CPU::execute(size_t instruction)
 
     case MVR:
         acc = getReg(fetch());
+        setFlagsForAcc();
         break;
 
     case JMP:
@@ -62,18 +79,23 @@ void CPU::execute(size_t instruction)
 
     case ADD:
         acc += getReg(fetch());
+        setFlagsForAcc();
         break;
 
     case SUB:
         acc -= getReg(fetch());
+        setFlagsForAcc();
         break;
 
     case INCA:
         acc++;
+        setFlagsForAcc();
         break;
 
     case CLA:
         acc = 0;
+        ZF = true;
+        NF = false;
         break;
 
     case LDR:
@@ -88,20 +110,44 @@ void CPU::execute(size_t instruction)
         setReg(fetch(), fetch());
         break;
 
+    case CMP:
+        setFlagsForAcc(getReg(fetch()) - getReg(fetch()));
+        break;
+
+    case JNE:
+        if (!ZF)
+        {
+            ip = fetch();
+        }
+        else
+        {
+            ip++;
+        }
+        break;
+
+    case INCR:
+        reg = fetch();
+        setReg(reg, getReg(reg) + 1);
+        break;
+
     case AND:
         acc &= getReg(fetch());
+        setFlagsForAcc();
         break;
 
     case OR:
         acc |= getReg(fetch());
+        setFlagsForAcc();
         break;
 
     case XOR:
         acc ^= acc;
+        setFlagsForAcc();
         break;
 
     case NOT:
         acc = ~acc;
+        setFlagsForAcc();
         break;
 
     case NOOP:
@@ -118,7 +164,7 @@ void CPU::execute(size_t instruction)
     step();
 }
 
-int CPU::getReg(size_t reg)
+int CPU::getReg(unsigned int reg)
 {
     if (reg > NUM_OF_REG)
     {
@@ -128,7 +174,7 @@ int CPU::getReg(size_t reg)
     return registers[reg];
 }
 
-void CPU::setReg(size_t reg, int value)
+void CPU::setReg(unsigned int reg, int value)
 {
     if (reg > NUM_OF_REG)
     {

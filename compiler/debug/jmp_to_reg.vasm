@@ -1,0 +1,4 @@
+mv r1, 0
+debug
+inca
+jmp r1

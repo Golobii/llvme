@@ -15,17 +15,26 @@ private:
     int ip;
     int acc;
 
-    int registers[NUM_OF_REG];
+    unsigned int registers[NUM_OF_REG];
 
-    void execute(size_t instruction);
+    // Zero Flag
+    bool ZF;
+    // Negative Flag
+    bool NF;
+
+    void execute(Byte instruction);
+
+    void setFlagsForAcc();
+
+    void setFlagsForAcc(int x);
 
     int fetch();
 
     void step();
 
-    void setReg(size_t reg, int value);
+    void setReg(unsigned int reg, int value);
 
-    int getReg(size_t reg);
+    int getReg(unsigned int reg);
 
 public:
     CPU(Memory mem);

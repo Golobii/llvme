@@ -1,0 +1,6 @@
+; $ symbol is used to get the current memory location
+mv r1, 0
+mv r2, 10
+
+mv r5, $
+

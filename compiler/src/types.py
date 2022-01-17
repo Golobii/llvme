@@ -3,3 +3,4 @@ class Types:
         self.instruction = 'ins'
         self.int = 'int'
         self.reg = 'reg'
+        self.label = 'label'

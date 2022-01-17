@@ -1,11 +1,11 @@
 #include "../include/memory.h"
 
-Byte Memory::getByte(size_t addr)
+Byte Memory::getByte(unsigned int addr)
 {
     return mem[addr];
 }
 
-void Memory::setByte(size_t addr, Byte value)
+void Memory::setByte(unsigned int addr, Byte value)
 {
     mem[addr] = value;
 }

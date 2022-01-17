@@ -1,4 +1,5 @@
 from src.token import Token
+from src.types import Types
 
 class Parser:
     def __init__(self, program: str) -> None:
@@ -7,6 +8,8 @@ class Parser:
 
         self._i = 0
         self._current = ''
+
+        self.types = Types()
 
         self.REGISTERS = {
             'r1': 0,
@@ -22,13 +25,10 @@ class Parser:
             'ip': 9
         }
 
-        self.INSTRUCTIONS = {
-            'mv': 'ins',
-            'debug': 'ins'
-        }
+        self.INSTRUCTIONS = ['mv', 'debug', 'jmp', 'inca', 'jne', 'cmp', 'incr'] 
 
     def is_instruction(self, word: str) -> bool:
-        for instruction in self.INSTRUCTIONS.keys():
+        for instruction in self.INSTRUCTIONS:
             if word == instruction:
                 return True
 
@@ -58,7 +58,7 @@ class Parser:
         if current.isdigit():
             isHex = False
             num = ''
-            while current.isdigit() or current == 'x' and not self.__over_program_len():
+            while (current.isdigit() or current == 'x') and not self.__over_program_len():
                 num += current
                 self._i += 1
                 current = self.program[self._i]
@@ -99,9 +99,11 @@ class Parser:
                 word += current
             
             if self.is_instruction(word):
-                self.tokens.append(Token(type='ins', value=0, name=word))
+                self.tokens.append(Token(type=self.types.instruction, value=0, name=word))
             elif self.is_reg(word):
-                self.tokens.append(Token('reg', self.REGISTERS[word]))
+                self.tokens.append(Token(self.types.reg, self.REGISTERS[word]))
+            elif word[-1] == ':':
+                self.tokens.append(Token(type=self.types.label, value=0, name=word))
             else:
                 raise SyntaxError(f'Word: \'{word}\' isn\'t a valid word.')
                 

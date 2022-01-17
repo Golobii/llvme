@@ -1,8 +1,6 @@
 #if !defined(INSTRUCTIONS_H)
 #define INSTRUCTIONS_H
 
-// not workey yet
-
 #define LDAC 0x10 // M[addr] -> acc    => <addr>
 #define STAC 0x11 // M[addr] <- acc    => <addr>
 #define MVAC 0x12 // reg <- acc        => <reg>
@@ -17,6 +15,11 @@
 #define STR 0x1A // M[addr] <- reg   => <addr> <reg>
 
 #define LLR 0x1B // reg <- val       => <reg> <val>
+
+#define CMP 0x1C  // ZF <- reg1 - reg2 => <reg> <reg>
+#define JNE 0x1D  // if ZF == true than ip <- addr => <addr>
+#define CRA 0x1E  // ZF <- acc - reg   => <reg>
+#define INCR 0x1F // reg++            => <reg>
 
 #define AND 0x20 // acc <- acc & reg => <reg>
 #define OR 0X21  // acc <- acc | reg => <reg>
