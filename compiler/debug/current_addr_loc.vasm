@@ -1,6 +1,18 @@
 ; $ symbol is used to get the current memory location
 mv r1, 0
 mv r2, 10
+debug
+
+label1:
+mv r5, $
+debug
+
+incr r1
+cmp r1, r2
 
 mv r5, $
+debug
 
+jne label1:
+
+mv r5, $

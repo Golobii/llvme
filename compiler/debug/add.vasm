@@ -1,0 +1,4 @@
+mv r1, 5
+mv r2, 6
+
+add 6, r1, r2          ; store r1 + r2 into r3

@@ -25,7 +25,7 @@ class Parser:
             'ip': 9
         }
 
-        self.INSTRUCTIONS = ['mv', 'debug', 'jmp', 'inca', 'jne', 'cmp', 'incr'] 
+        self.INSTRUCTIONS = ['mv', 'debug', 'jmp', 'inca', 'jne', 'cmp', 'incr', 'add'] 
 
     def is_instruction(self, word: str) -> bool:
         for instruction in self.INSTRUCTIONS:
@@ -73,13 +73,19 @@ class Parser:
             else:
                 num = int(num)
 
-            self.tokens.append(Token(type='int', value=num))
+            self.tokens.append(Token(type=self.types.int, value=num))
 
         elif current == ' ':
             pass
 
         elif current == ',':
             pass
+
+        elif current == '\n':
+            pass
+
+        elif current == '$':
+            self.tokens.append(Token(self.types.cma, 0))
 
         elif current == ';':
             while current != '\n' and not self.__over_program_len():

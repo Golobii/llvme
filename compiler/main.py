@@ -3,6 +3,8 @@ import sys
 from src.parser import Parser
 from src.compiler import Compiler
 
+DEBUG: bool = False
+
 def main() -> None:
     with open(sys.argv[1], 'r') as f:
         program = f.read()
@@ -11,9 +13,11 @@ def main() -> None:
     compiler = Compiler()
 
     tokens = parser.tokenize()
-    for token in tokens:
-        print(f'({token.type}|{token.value}|{token.name})', end=' ') 
-    print()
+
+    if DEBUG:
+        for token in tokens:
+            print(f'({token.type}|{token.value}|{token.name})', end=' ') 
+        print()
 
     buffer = compiler.compile_tokens(tokens)
 
