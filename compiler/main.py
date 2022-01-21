@@ -3,7 +3,7 @@ import sys
 from src.parser import Parser
 from src.compiler import Compiler
 
-DEBUG: bool = False
+DEBUG: bool = True
 
 def main() -> None:
     with open(sys.argv[1], 'r') as f:

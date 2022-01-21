@@ -1,5 +1,7 @@
 #include "../include/memory.h"
 
+#include <iostream>
+
 Byte Memory::getByte(unsigned int addr)
 {
     return mem[addr];

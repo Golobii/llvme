@@ -1,0 +1,5 @@
+; save byte => <addr(int)>  <val(int)>
+sb #100, 10
+debug
+mv r1, #100
+debug

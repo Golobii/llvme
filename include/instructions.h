@@ -27,6 +27,9 @@
 #define NOT 0x23 // acc <- ~acc
 // TODO: add shifts
 
+#define SB 0x30 // M[addr] <- val   => <addr> <val>
+
+// TODO: add memory access
 #define HLT 0xff
 #define DEBUG 0xf0
 #define NOOP 0x00

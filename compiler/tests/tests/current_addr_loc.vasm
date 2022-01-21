@@ -7,7 +7,7 @@ label1:
 mv r5, $
 debug
 
-incr r1
+inc r1
 cmp r1, r2
 
 mv r5, $

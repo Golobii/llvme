@@ -21,11 +21,11 @@ class Parser:
             'r7': 6,
             'r8': 7,
 
-            'acc': 8,
+            'A': 8,
             'ip': 9
         }
 
-        self.INSTRUCTIONS = ['mv', 'debug', 'jmp', 'inca', 'jne', 'cmp', 'incr', 'add'] 
+        self.INSTRUCTIONS = ['mv', 'debug', 'jmp', 'inc', 'jne', 'cmp', 'add', 'sb'] 
 
     def is_instruction(self, word: str) -> bool:
         for instruction in self.INSTRUCTIONS:
@@ -52,28 +52,34 @@ class Parser:
 
         return True
 
-    def tokenize(self) -> list[Token]:
-        current = self.program[self._i]
-        
-        if current.isdigit():
+    def __construct_int(self, current: str) -> int:
             isHex = False
-            num = ''
-            while (current.isdigit() or current == 'x') and not self.__over_program_len():
-                num += current
+            num = current
+            while not self.__over_program_len():
                 self._i += 1
                 current = self.program[self._i]
+                if not current.isdigit() and current != 'x':
+                    break
+                num += current
                 if current == 'x':
                     if isHex:
                         raise SyntaxError(f'Invalid number {num}.')
 
                     isHex = True
 
-            if isHex:
-                num = int(num, base=16)
-            else:
-                num = int(num)
 
-            self.tokens.append(Token(type=self.types.int, value=num))
+            if isHex:
+                return int(num, base=16)
+
+            return int(num)
+
+
+    def tokenize(self) -> list[Token]:
+        current = self.program[self._i]
+        
+        if current.isdigit():
+            digit = self.__construct_int(current)
+            self.tokens.append(Token(type=self.types.int, value=digit))
 
         elif current == ' ':
             pass
@@ -86,6 +92,11 @@ class Parser:
 
         elif current == '$':
             self.tokens.append(Token(self.types.cma, 0))
+
+        elif current == '#':
+            self._i += 1
+            digit = self.__construct_int(self.program[self._i])
+            self.tokens.append(Token(type=self.types.addr, value=digit))
 
         elif current == ';':
             while current != '\n' and not self.__over_program_len():

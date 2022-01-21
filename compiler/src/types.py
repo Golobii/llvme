@@ -5,3 +5,4 @@ class Types:
         self.reg = 'reg'
         self.label = 'label'
         self.cma = '$'
+        self.addr = 'addr'

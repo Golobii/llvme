@@ -2,7 +2,7 @@
 #define CPU_H
 
 #include <iostream>
-#include "memory.h"
+#include "mapper.h"
 #include "instructions.h"
 
 #define NUM_OF_REG 8
@@ -10,7 +10,7 @@
 class CPU
 {
 private:
-    Memory mem;
+    Mapper mem;
 
     int ip;
     int acc;
@@ -37,7 +37,7 @@ private:
     int getReg(unsigned int reg);
 
 public:
-    CPU(Memory mem);
+    CPU(Mapper mem);
     ~CPU();
 
     void boot();

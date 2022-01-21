@@ -1,4 +1,4 @@
 mv r1, 0
 debug
-inca
+inc A
 jmp r1

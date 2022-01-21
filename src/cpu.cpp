@@ -1,6 +1,6 @@
 #include "../include/cpu.h"
 
-CPU::CPU(Memory mem)
+CPU::CPU(Mapper mem)
 {
     this->mem = mem;
 }
@@ -38,8 +38,9 @@ void CPU::setFlagsForAcc(int x)
 
 void CPU::execute(Byte instruction)
 {
-    int reg;
-    int val;
+    unsigned int reg;
+    unsigned int val;
+    unsigned int val2;
     switch (instruction)
     {
     case DEBUG:
@@ -99,7 +100,9 @@ void CPU::execute(Byte instruction)
         break;
 
     case LDR:
-        setReg(fetch(), mem.getByte(fetch()));
+        val = fetch();
+        reg = fetch();
+        setReg(reg, mem.getByte(val));
         break;
 
     case STR:
@@ -150,6 +153,12 @@ void CPU::execute(Byte instruction)
         setFlagsForAcc();
         break;
 
+    case SB:
+        val = fetch();
+        val2 = fetch();
+        mem.setByte(val, val2);
+        break;
+
     case NOOP:
         break;
 
@@ -158,6 +167,7 @@ void CPU::execute(Byte instruction)
 
     default:
         std::cout << "System error\n";
+        std::cout << "Unknown instruction: " << instruction << " \n";
         return;
     }
 

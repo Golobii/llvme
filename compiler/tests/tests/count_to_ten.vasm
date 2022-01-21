@@ -2,7 +2,7 @@ mv r1, 0
 mv r2, 10
 label:
 debug
-incr r1
+inc r1
 cmp r1, r2
 debug
 jne label:

@@ -2,10 +2,13 @@
 #include <fstream>
 #include <vector>
 
-#include "../include/memory.h"
 #include "../include/cpu.h"
+#include "../include/mapper.h"
 
-void flashMem(std::string fileName, Memory *mem)
+#include "../include/devices/ram.h"
+#include "../include/devices/screen.h"
+
+void flashMem(std::string fileName, Mapper *mem)
 {
     std::ifstream f;
     f.open(fileName, std::ios::binary);
@@ -28,12 +31,16 @@ void flashMem(std::string fileName, Memory *mem)
 
 int main(int argc, char const *argv[])
 {
+    Mapper mm;
+    Ram ram;
+    Screen scr;
 
-    Memory mem;
+    mm.map(&ram, 0x00, 0xf0);
+    mm.map(&scr, 0xf1, 0xfa);
 
-    flashMem(argv[1], &mem);
+    flashMem(argv[1], &mm);
 
-    CPU cpu(mem);
+    CPU cpu(mm);
 
     cpu.boot();
 

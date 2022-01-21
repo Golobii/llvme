@@ -1,0 +1,5 @@
+mv r1, 5
+mv r2, 6
+
+add r3, r1, r2          ; store r1 + r2 into r3
+debug
